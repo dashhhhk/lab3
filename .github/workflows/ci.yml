@@ -26,11 +26,11 @@ jobs:
     # модульные тесты с генерацией отчета
     - name: Run tests with HTML report
       run: |
-        # КОПИРУЕМ файлы чтобы все было в одной папке
-        cp src/calculator.py tests/
-        cd tests
-        python -m pytest test_calculator.py --html=report.html --self-contained-html -v
-        cp report.html ../
+        # Найдем где реально файлы
+        find . -name "calculator.py"
+        find . -name "test_calculator.py"
+        # Запустим тесты откуда угодно
+        python -m pytest --html=report.html --self-contained-html -v
     
     # резы теста как арт
     - name: Upload test report
