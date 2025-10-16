@@ -37,12 +37,24 @@ jobs:
     # Потом попробуем импорт
     - name: Test imports
       run: |
-        python -c "import sys; sys.path.append('src'); from calculator import add; print('Import successful!')"
+        python -c "
+        import sys, os
+        current_dir = os.getcwd()
+        src_path = os.path.join(current_dir, 'src')
+        sys.path.insert(0, src_path)
+        from calculator import add
+        print('Import successful! 2+3 =', add(2,3))
+        "
     
     # И только потом запустим pytest
     - name: Run tests with HTML report
       run: |
-        python -m pytest tests/ --html=report.html --self-contained-html -v
+        cd tests
+        python -c "
+        import sys, os
+        sys.path.append('../src')
+        "
+        python -m pytest test_calculator.py --html=../report.html --self-contained-html -v
     
     # резы теста как арт
     - name: Upload test report
