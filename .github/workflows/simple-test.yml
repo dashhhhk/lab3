@@ -1,0 +1,29 @@
+name: Simple Test
+
+on: [push]
+
+jobs:
+  simple:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+    
+    - name: List files
+      run: |
+        echo "=== Project Structure ==="
+        find . -type f -name "*.py" | sort
+        echo "=== Current directory ==="
+        pwd
+        ls -la
+    
+    - name: Simple Python test
+      run: |
+        echo "Testing Python..."
+        python --version
+        python -c "print('Hello from GitHub Actions!')"
