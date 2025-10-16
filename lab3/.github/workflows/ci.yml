@@ -1,0 +1,25 @@
+name: Tests and linters
+
+on: [push, pull_request, workflow_dispatch]
+
+jobs:
+  test-on-different-versions:
+    name: Run tests
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.8", "3.9", "3.10", "3.11"]
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+    - run: pip install tox
+    - run: tox
+      env:
+        DEPENDENCY_INJECTOR_LIMITED_API: 1
+        TOXENV: ${{ matrix.python-version }}
+
+  test-different-pydantic-versions:
+    name: Run tests with different pydantic versions
+    runs-on: ubuntu-latest
